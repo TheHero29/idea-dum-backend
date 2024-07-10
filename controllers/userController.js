@@ -16,7 +16,7 @@ exports.getAllUsers = async (req, res) => {
     try{
       const users = await userModel.find({});
       if (users==[])
-      return res.status(404).send("NO users available");
+      return res.status(404).send("No users available");
       res.send(users);
     }
     catch(err){
