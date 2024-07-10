@@ -1,6 +1,6 @@
 const postModel = require('../models/postModel.js');
 
-exports.getpostById = async (req, res) => {
+exports.getPostById = async (req, res) => {
     try{
       const post = await postModel.findById({_id:req.params.id});
       if (!post)
@@ -12,7 +12,7 @@ exports.getpostById = async (req, res) => {
     }
     
 }
-exports.getAllposts = async (req, res) => {
+exports.getAllPosts = async (req, res) => {
     try{
       const posts = await postModel.find({});
       if (posts==[])
@@ -24,7 +24,7 @@ exports.getAllposts = async (req, res) => {
     }
       
   }
-exports.createpost = async (req, res) => {
+exports.createPost = async (req, res) => {
     try{
       const body = req.body;
       if(!body.title || !body.content || !body.author)
@@ -44,7 +44,7 @@ exports.createpost = async (req, res) => {
     }    
 }
 
- exports.updatepostById = async (req, res) => {
+ exports.updatePostById = async (req, res) => {
     try{
       const post = await postModel.findByIdAndUpdate(req.params.id,req.body,{new:true});
       if (!post)
@@ -57,7 +57,7 @@ exports.createpost = async (req, res) => {
       
 }
 
-exports.deletepostById =  async (req, res) => {
+exports.deletePostById =  async (req, res) => {
     try{
       const post = await postModel.deleteOne({_id:req.params.id});
       if (!post)
