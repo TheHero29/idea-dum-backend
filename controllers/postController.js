@@ -32,7 +32,7 @@ exports.createPost = async (req, res) => {
       const post = postModel.create({
           title: body.title,
           content: body.content,
-          athor: body.author,
+          author: body.author,
           tags: body.tags,
           image: body.image,
       });
