@@ -144,7 +144,9 @@ exports.loginUser = async (req, res) => {
 
 exports.getCurrentUser = async (req, res) => {
   try {
+    console.log("answering req")
     const user = await userModel.findById(req.body.userId).select("-password");
+    console.log(user);
     res.status(200).send({
       success: true,
       message: "You are authorized",

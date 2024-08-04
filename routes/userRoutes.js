@@ -7,8 +7,10 @@ const authMiddleware = require("../middleware/auth");
 //get all users
 router.get("/", userController.getAllUsers); 
 
+router.get("/get-current-user",authMiddleware,userController.getCurrentUser)
+
 //get user by id
-router.get("/:id", userController.getUserById); 
+// router.get("/:id", userController.getUserById); 
 
 //delete user by id
 router.delete("/:id", userController.deleteUserById);   
@@ -23,6 +25,5 @@ router.post("/login", userController.loginUser);
 router.post("/register", userController.createUser);
 
 //get current user
-router.post("/get-current-user",authMiddleware, userController.getCurrentUser);
-  
+// router.get("/get-current-user",authMiddleware,userController.getCurrentUser);
 module.exports = router;
