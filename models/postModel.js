@@ -24,11 +24,19 @@ const postSchema = new mongoose.Schema({
       type: Buffer,  // Storing image as binary data
       contentType: String
     },
-    upvotes: {
+    upvotesArray: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: []
+    },
+    downvotesArray: {
+      type: [mongoose.Schema.Types.ObjectId],
+      default: []
+    },
+    upvotes:{
       type: Number,
       default: 0
     },
-    downvotes: {
+    downvotes:{
       type: Number,
       default: 0
     },

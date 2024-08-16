@@ -14,6 +14,8 @@ router.delete("/:id", postController.deletePostById);
 
 //update post by id
 router.put("/:id", postController.updatePostById);  
+router.put("/:id/upvote", postController.upvotePostById);  
+router.put("/:id/downvote", postController.downvotePostById);  
 
 //create post
 router.post("/", postController.createPost);

@@ -64,19 +64,79 @@ exports.updatePostById = async (req, res) => {
     const post = await postModel.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
-    if (!post) return res.status(404).send("post with given ID not found");
+    if (!post)
+      return res
+        .status(404)
+        .send({ success: false, message: "post with given ID not found" });
     res.send(post);
   } catch (err) {
-    return res.status(404).send("post with given ID not found");
+    return res
+      .status(404)
+      .send({ success: false, message: "post with given ID not found" });
   }
 };
 
 exports.deletePostById = async (req, res) => {
   try {
     const post = await postModel.deleteOne({ _id: req.params.id });
-    if (!post) return res.status(404).send("post with given ID not found");
+    if (!post)
+      return res
+        .status(404)
+        .send({ success: false, message: "post with given ID not found" });
     res.send(post);
   } catch (err) {
-    return res.status(404).send("post with given ID not found");
+    return res
+      .status(404)
+      .send({ success: false, message: "post with given ID not found" });
+  }
+};
+
+exports.upvotePostById = async (req, res) => {
+  try {
+    const post = await postModel.findById({ _id: req.params.id });
+    if (!post)
+      return res
+        .status(404)
+        .send({ success: false, message: "post with given ID not found" });
+    if (post.downvotesArray.includes(req.body.userId)) {
+      post.downvotesArray.remove(post.downvotesArray.indexOf(req.body.userId));
+      post.downvotes -= 1;
+      await post.save();
+    }
+    if (!post.upvotesArray.includes(req.body.userId)) {
+      post.upvotesArray.push(req.body.userId);
+      post.upvotes += 1;
+      await post.save();
+    }
+    res.send(post);
+  } catch (err) {
+    return res
+      .status(404)
+      .send({ success: true, message: "post with given ID not found" });
+  }
+};
+
+exports.downvotePostById = async (req, res) => {
+  try {
+    const post = await postModel.findById({ _id: req.params.id });
+    if (!post)
+      return res
+        .status(404)
+        .send({ success: false, message: "post with given ID not found" });
+    if (post.upvotesArray.includes(req.body.userId)) {
+      post.upvotesArray.remove(post.upvotesArray.indexOf(req.body.userId));
+      post.upvotes -= 1;
+      await post.save();
+    }
+    if (!post.downvotesArray.includes(req.body.userId)) {
+      post.downvotesArray.push(req.body.userId);
+      post.downvotes += 1;
+      await post.save();
+    }
+    res.send(post);
+  } catch (err) {
+    return res
+      .status(404)
+      .send({ success: true, message: "post with given ID not found" });
   }
 };
