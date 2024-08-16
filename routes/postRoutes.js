@@ -2,6 +2,7 @@
 
 const router = require("express").Router();
 const postController = require("../controllers/postController");
+const authMiddleware = require("../middleware/auth");
 
 //get all posts
 router.get("/", postController.getAllPosts); 
@@ -14,10 +15,10 @@ router.delete("/:id", postController.deletePostById);
 
 //update post by id
 router.put("/:id", postController.updatePostById);  
-router.put("/:id/upvote", postController.upvotePostById);  
-router.put("/:id/downvote", postController.downvotePostById);  
+router.put("/:id/upvote", authMiddleware,postController.upvotePostById);  
+router.put("/:id/downvote", authMiddleware,postController.downvotePostById);  
 
 //create post
-router.post("/", postController.createPost);
+router.post("/",authMiddleware,postController.createPost);
   
 module.exports = router;

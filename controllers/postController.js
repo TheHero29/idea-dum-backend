@@ -16,6 +16,7 @@ exports.getPostById = async (req, res) => {
 };
 exports.getAllPosts = async (req, res) => {
   try {
+    // console.log(req);
     const posts = await postModel.find({});
     if (posts == [])
       return res
@@ -93,13 +94,16 @@ exports.deletePostById = async (req, res) => {
 
 exports.upvotePostById = async (req, res) => {
   try {
+    console.log(req.body.userId + " upvoting this post");
     const post = await postModel.findById({ _id: req.params.id });
     if (!post)
       return res
         .status(404)
         .send({ success: false, message: "post with given ID not found" });
+    // console.log(post.upvotesArray);
+    // console.log(post.downvotesArray);
     if (post.downvotesArray.includes(req.body.userId)) {
-      post.downvotesArray.remove(post.downvotesArray.indexOf(req.body.userId));
+      post.downvotesArray.splice(post.downvotesArray.indexOf(req.body.userId),1);
       post.downvotes -= 1;
       await post.save();
     }
@@ -108,6 +112,8 @@ exports.upvotePostById = async (req, res) => {
       post.upvotes += 1;
       await post.save();
     }
+    // console.log("After:" + post.upvotesArray);
+    // console.log("After:" + post.downvotesArray);
     res.send(post);
   } catch (err) {
     return res
@@ -118,13 +124,16 @@ exports.upvotePostById = async (req, res) => {
 
 exports.downvotePostById = async (req, res) => {
   try {
+    console.log(req.body.userId + " downvoting this post");
     const post = await postModel.findById({ _id: req.params.id });
     if (!post)
       return res
         .status(404)
         .send({ success: false, message: "post with given ID not found" });
+    // console.log(post.upvotesArray);
+    // console.log(post.downvotesArray);
     if (post.upvotesArray.includes(req.body.userId)) {
-      post.upvotesArray.remove(post.upvotesArray.indexOf(req.body.userId));
+      post.upvotesArray.splice(post.upvotesArray.indexOf(req.body.userId),1);
       post.upvotes -= 1;
       await post.save();
     }
