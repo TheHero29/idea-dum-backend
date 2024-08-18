@@ -100,8 +100,6 @@ exports.upvotePostById = async (req, res) => {
       return res
         .status(404)
         .send({ success: false, message: "post with given ID not found" });
-    // console.log(post.upvotesArray);
-    // console.log(post.downvotesArray);
     if (post.downvotesArray.includes(req.body.userId)) {
       post.downvotesArray.splice(post.downvotesArray.indexOf(req.body.userId),1);
       post.downvotes -= 1;
@@ -112,8 +110,12 @@ exports.upvotePostById = async (req, res) => {
       post.upvotes += 1;
       await post.save();
     }
-    // console.log("After:" + post.upvotesArray);
-    // console.log("After:" + post.downvotesArray);
+    else 
+    {
+      post.upvotesArray.splice(post.upvotesArray.indexOf(req.body.userId),1);
+      post.upvotes -= 1;
+      await post.save();
+    }
     res.send(post);
   } catch (err) {
     return res
@@ -130,8 +132,6 @@ exports.downvotePostById = async (req, res) => {
       return res
         .status(404)
         .send({ success: false, message: "post with given ID not found" });
-    // console.log(post.upvotesArray);
-    // console.log(post.downvotesArray);
     if (post.upvotesArray.includes(req.body.userId)) {
       post.upvotesArray.splice(post.upvotesArray.indexOf(req.body.userId),1);
       post.upvotes -= 1;
@@ -140,6 +140,12 @@ exports.downvotePostById = async (req, res) => {
     if (!post.downvotesArray.includes(req.body.userId)) {
       post.downvotesArray.push(req.body.userId);
       post.downvotes += 1;
+      await post.save();
+    }
+    else
+    {
+      post.downvotesArray.splice(post.downvotesArray.indexOf(req.body.userId),1);
+      post.downvotes -= 1;
       await post.save();
     }
     res.send(post);

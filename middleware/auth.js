@@ -9,9 +9,9 @@ const auth = async (req, res, next) => {
       console.log("if cond")
       return res.status(401).json({ success:false, message: "No token provided" });
     }
-    console.log("exectuing this")
+    // console.log("exectuing this")
     const verified = jwt.verify(token,process.env.JWT_SECRET);
-    console.log(verified);
+    // console.log(verified);
     req.body.userId = verified.user_id;
 
     next();
