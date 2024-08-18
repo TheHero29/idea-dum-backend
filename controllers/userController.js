@@ -1,4 +1,3 @@
-const { success } = require("update/lib/utils.js");
 const userModel = require("../models/userModel.js");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
